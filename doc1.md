@@ -9,6 +9,10 @@ LangChain is a standard interface through which you can interact with a variety 
 LangChain provides several classes and functions to make constructing and working with prompts easy.
 - Memory  
 LangChain provides memory components to manage and manipulate previous chat messages and incorporate them into chains. This is crucial for chatbots, which need to remember prior interactions.
+- Indexes  
+Indexes refer to ways to structure documents so that LLMs can best interact with them.
+- Chains  
+Chains allow us to combine multiple components together to create a single, coherent application. 
 - Agents  
 LangChain provides agents that have access to a suite of tools. Depending on the user’s input, an agent can decide which tools to call.
 # 4. LangChain Technical Details
