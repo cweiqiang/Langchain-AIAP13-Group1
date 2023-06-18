@@ -141,11 +141,15 @@ One of the problems with the user’s interaction with the LLM is that the creat
 
 For example, one might imagine that a simple prompt would suffice when instructing the AI to perform a simple task like:
 
-    Write a 500-word proposal targeted at the senior management about how LLM can be used to improve operational efficiency.
+```
+Write a 500-word proposal targeted at the senior management about how LLM can be used to improve operational efficiency.
+```
 
 However, to get a good response, one would need to provide a greater amount of details, like:
 
-    You are an expert data scientist. You are able to translate technical terms to business terms well. Write a 500-word proposal targeted at the senior management about how LLM can be used to improve operational efficiency. Only include factually correct information. Explain your reasoning.
+```
+You are an expert data scientist. You are able to translate technical terms to business terms well. Write a 500-word proposal targeted at the senior management about how LLM can be used to improve operational efficiency. Only include factually correct information. Explain your reasoning.
+```
 
 However, much of the boilerplate text in the prompt would be identical to the next. Therefore, it would be ideal for one to write the prompt once, and have it automatically included in the subsequent prompts.
 
