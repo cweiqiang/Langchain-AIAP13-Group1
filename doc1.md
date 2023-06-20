@@ -423,11 +423,7 @@ A chain is an end-to-end wrapper that allows us to combine multiple components i
 
 There are 3 categories of chains:
 
-1. Generic Functionality chains
-2. Index-related Chains
-3. All other chains
-
-### **Generic Functionality chains**
+### **1. Generic Functionality chains**
 
 **LLMChain**
 
@@ -437,18 +433,47 @@ There are 3 categories of chains:
 - Model (LMM or ChatModel)
 - Output Parser (Optional)
 
-This is the most commonly used type of chain which combines a Prompt Template, a Model (either an LLM or a ChatModel) and an optional Output Parser. This chain takes in user input, uses the PromptTemplate to format them into a prompt and passes it to the model. The output from the model will be passed to the OutputParser (if provided) to parse the output of the model into a final format
+This is the most commonly used type of chain which combines a Prompt Template, a Model (either  an LLM or a ChatModel) and an optional Output Parser. This chain takes in user input, uses the PromptTemplate to format them into a prompt and passes it to the model. The output from the model will be passed to the OutputParser (if provided) to parse the output of the model into a final format.
 
-### **Index-related chains**
+<codes>
 
-This type of chains are used for interacting with indexes so that you can combine your own data (stored in the indexes) with LLMs. The best example of this is question answering over your own documents.
+### **2. Index-related chains**
 
-Methods to pass multiple documents to the LLM:
+This type of chains are used for interacting with indexes so that you can combine your own data (stored in the indexes) with LLMs. A common use case is question answering over your own documents.
 
-- Stuffing
-- Map Reduce
-- Refine
-- Map-Rerank
+There are 4 methods to pass multiple documents to the LLM:
+
+### **a. Stuffing​** ###
+
+Stuffing is the simplest method. All the related data are stuffed into the prompt as context to pass to the language model. 
+
+![image](https://github.com/cweiqiang/-aiap13_group1_sharing/assets/45007601/6d432443-c77e-49a8-be8b-db792c6ab096)
+
+https://github.com/cweiqiang/-aiap13_group1_sharing/blob/6a2a01b9c2a61353c2c25a28b69cdaab45bba085/langchain_dlai_l4_q_a_over_documents.py#L109-L115
+
+### **b. Map Reduce​** ###
+
+In this method, an initial prompt is run on each chunk of data. For example, for summarization tasks, this could be a summary of that chunk. For question-answering tasks, it could be an answer based solely on that chunk. A different prompt is then run to combine all the initial outputs from each chunk of data.
+
+![image](https://github.com/cweiqiang/-aiap13_group1_sharing/assets/45007601/36ae1174-0750-44ff-b592-516733bfd627)
+
+
+### **c. Refine​​** ###
+
+In this method, an initial prompt is run on the first chunk of data and some output is generated. These outputs are then passed into the remaining documents, along with the next document, asking the LLM to refine the output based on the new document.
+
+![image](https://github.com/cweiqiang/-aiap13_group1_sharing/assets/45007601/056b38d9-fd08-4dda-902d-ff8708c0b262)
+
+#### **d. Map-Rerank** ####
+
+In this method, an initial prompt is run on each chunk of data. Besides completing the task, the  chain also gives a score for how certain it is in its answer. The responses are then ranked according to this score, and the highest score is returned. This method is used to rank and prioritize the documents based on their relevance to the query.
+
+![image](https://github.com/cweiqiang/-aiap13_group1_sharing/assets/45007601/85686388-8328-4356-ab15-aa6cb4591497)
+
+
+
+
+### **3. All other chains**
 
 ### **Combine chains with the SequentialChain**
 
