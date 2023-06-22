@@ -429,8 +429,8 @@ These chains are structured assembly of components for accomplishing specific hi
 
 Please refer to these links for the list of available chains:
 
-[https://python.langchain.com/docs/modules/chains/popular/]
-[https://python.langchain.com/docs/modules/chains/additional/]
+- https://python.langchain.com/docs/modules/chains/popular/
+- https://python.langchain.com/docs/modules/chains/additional/
 
 
 We will look at some of these chains.
