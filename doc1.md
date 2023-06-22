@@ -39,26 +39,6 @@ Integrating LLMs into data pipelines or software applications can be complex. La
 
 Presenting data to the LLM in an appropriate format can be challenging. LangChain solves this with indexes that store data in a format suitable for row-wise serving into an LLM. It also provides index-related chains and various techniques for passing data to the LLM, like prompt stuffing, map-reduce, refine, and map-rerank. Each technique serves different needs and types of data.
 
-## 1.2. LangChain Use Cases
-
-LangChain extends the possibilities of LLM utilization in different domains, empowering users to leverage natural language interactions, API integrations, chatbot development, and various data-related applications.
-
-### **1. Querying Datasets with Natural Language:**
-
-LangChain enables the use of natural language to write SQL queries or equivalent Python or R code for data analysis. It makes exploratory data analysis accessible to individuals without coding skills. LangChain provides document loaders, index-related chains, and output parsers to handle small datasets directly or pass data structure details to the LLM for generating SQL/Python/R code.
-
-### **2. Interacting with APIs:**
-
-LangChain is suitable for data use cases that involve integrating AI from an LLM into a longer workflow with other API calls. It offers chain and agent features to connect these steps sequentially and incorporate additional business logic for branching pipelines.
-
-### **3. Building a Chatbot:**
-
-LangChain is useful for creating chatbots with realistic behavior and controlled personalities. It provides prompt templates to customize the chatbot's tone of voice and style of communication. The message history tools allow the chatbot to have an extended memory, ensuring better context retention and consistency within and across conversations.
-
-### **4. Other Uses:**
-
-LangChain offers a framework for including AI in various data-related applications. It can be employed in creating personal assistants, summarizing reports, answering questions about support documents or knowledge bases, and more. It provides flexibility for integrating AI into any data pipeline or data application imaginable.
-
 # 2.0. How Does LangChain Solve the Problems
 
 LangChain is a library designed to assist in the development of applications that utilize large language models (LLMs). These applications often involve combining LLMs (such as GPT3.5 turbo, etc) with other sources of computation or knowledge.
@@ -111,13 +91,30 @@ Chains involve sequences of calls (whether to an LLM or a different utility). La
 
 Agents involve an LLM making decisions about which Actions to take, taking that Action, seeing an Observation, and repeating that until done. LangChain provides a standard interface for agents, a selection of agents to choose from, and examples of end-to-end agents.
 
-### **Evaluation [Recently released!]:**
+# 3.0. LangChain Use Cases
 
-Generative models are notoriously hard to evaluate with traditional metrics. One new way of evaluating them is using language models themselves to do the evaluation. LangChain provides some prompts/chains for assisting in this​1​.
+LangChain extends the possibilities of LLM utilization in different domains, empowering users to leverage natural language interactions, API integrations, chatbot development, and various data-related applications.
 
-# 3.0. LangChain Components
+### **1. Querying Datasets with Natural Language:**
 
-## 3.1. Large language models
+LangChain enables the use of natural language to write SQL queries or equivalent Python or R code for data analysis. It makes exploratory data analysis accessible to individuals without coding skills. LangChain provides document loaders, index-related chains, and output parsers to handle small datasets directly or pass data structure details to the LLM for generating SQL/Python/R code.
+
+### **2. Interacting with APIs:**
+
+LangChain is suitable for data use cases that involve integrating AI from an LLM into a longer workflow with other API calls. It offers chain and agent features to connect these steps sequentially and incorporate additional business logic for branching pipelines.
+
+### **3. Building a Chatbot:**
+
+LangChain is useful for creating chatbots with realistic behavior and controlled personalities. It provides prompt templates to customize the chatbot's tone of voice and style of communication. The message history tools allow the chatbot to have an extended memory, ensuring better context retention and consistency within and across conversations.
+
+### **4. Other Uses:**
+
+LangChain offers a framework for including AI in various data-related applications. It can be employed in creating personal assistants, summarizing reports, answering questions about support documents or knowledge bases, and more. It provides flexibility for integrating AI into any data pipeline or data application imaginable.
+
+
+# 4.0. LangChain Components
+
+## 4.1. Large language models
 
 While LangChain does not serve its own LLMs, it provides a standard interface through which users can interact with a variety of LLMs from various LLM providers (such as OpenAI and Hugging Face).
 
@@ -135,7 +132,7 @@ If users wish to use their own LLM or if they want to call a different LLM wrapp
 
 Some LLMs provide a streaming response. This means that instead of waiting for the entire response to be returned, it can be processed as soon as it is available. This is particularly useful for processing the response or displaying the response to the user as it is being generated.
 
-## 3.2. Prompt templates
+## 4.2. Prompt templates
 
 One of the problems with the user’s interaction with the LLM is that the creation of a good prompt is dependent on much more than just defining a task for the AI to complete. The user also has to describe the AI’s role, personality and writing style to encourage factual accuracy.
 
@@ -182,7 +179,7 @@ Output:
 # -> What is a good name for a company that makes colorful socks?
 ```
 
-## 3.3. Memory
+## 4.3. Memory
 
 A language model’s response is highly dependent on its previous conversation with the user. Therefore, it is important that an application that uses a language model is able to remember interactions, both at short term and at long term.
 
@@ -382,7 +379,7 @@ The conversation summary memory is a mix of the ConversationSummaryMemory and th
 
 Similar to the ConversationKnowledgeGraphMemory, this memory keeps a recollection of the main entities that have been mentioned, together with their specific attributes.
 
-## 3.4. Indexes
+## 4.4. Indexes
 
 Language models become even more powerful when combined with application-specific data. However, we need to structure the data before it can be used by the LLM. Indexes refer to the methods of structuring documents so that LLMs can best interact with them.
 
@@ -417,7 +414,7 @@ The values are then passed, using the prompt, to the LLM for processing to get b
 
 ![Alt text](images/image1.png "Title")
 
-## 3.5. Chains
+## 4.5. Chains
 
 A chain is an end-to-end wrapper that allows us to combine multiple components in a particular way to accomplish a common use case. The components in a chain can be either primitives (such as prompts, models, and arbitrary functions) or other chains. 
 
@@ -629,7 +626,7 @@ qa = RetrievalQA(combine_documents_chain=qa_chain, retriever=docsearch.as_retrie
 
 
 
-## 3.6. Agents
+## 4.6. Agents
 
 LangChain provides agents that have access to a suite of tools. Depending on the user’s input, an agent can decide which tools to call. As mentioned above, some agents and tools that might be useful for internal document querying and data analysis are as follows:
 
@@ -650,13 +647,17 @@ LangChain provides agents that have access to a suite of tools. Depending on the
 4. Wikipedia for fact checking
 5. Custom made tools, etc
 
-# 4.0. Use Case
+# 5.0. Use Case
 
 Example:
 
 - LLM research article in PDF format
 - Data in CSV format for example analysis / visualization
 
-# 5.0 Conclusion & Extensions
+# 6.0 Limitations
 
-# 6.0 Resources and References
+1. Always evolving. Might affect deployment. 
+
+# 7.0 Conclusion & Extensions
+
+# 8.0 Resources and References
