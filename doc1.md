@@ -419,65 +419,219 @@ The values are then passed, using the prompt, to the LLM for processing to get b
 
 ## 3.5. Chains
 
-A chain is an end-to-end wrapper that allows us to combine multiple components in a particular way to accomplish a common use case. The components in a chain can be either primitives (such as prompts, models, arbitrary functions) or other chains.
+A chain is an end-to-end wrapper that allows us to combine multiple components in a particular way to accomplish a common use case. The components in a chain can be either primitives (such as prompts, models, and arbitrary functions) or other chains. 
 
-There are 3 categories of chains:
+Composing components together in a chain is simple yet powerful. It drastically simplifies and makes the implementation of complex applications more modular, making it easier to debug, maintain, and improve your applications.
 
-### **1. Generic Functionality chains**
+**Off-the-shelf chains**
 
-**LLMChain**
+These chains are structured assembly of components for accomplishing specific higher-level tasks which can be used out of the box, making it easy to get started. For more complex use cases, components make it easy to customize existing chains or build new ones.
+
+Please refer to these links for the list of available chains:
+
+[https://python.langchain.com/docs/modules/chains/popular/]
+[https://python.langchain.com/docs/modules/chains/additional/]
+
+
+We will look at some of these chains.
+
+
+***LLMChain***
 
 **Components:**
-
 - Prompt Template
 - Model (LMM or ChatModel)
 - Output Parser (Optional)
 
-This is the most commonly used type of chain which combines a Prompt Template, a Model (either  an LLM or a ChatModel) and an optional Output Parser. This chain takes in user input, uses the PromptTemplate to format them into a prompt and passes it to the model. The output from the model will be passed to the OutputParser (if provided) to parse the output of the model into a final format.
+This is a simple chain that adds some functionality around language models. This chain takes in user input, uses the PromptTemplate to format the input key values provided (and memory key values if available) into a prompt and passes it to the LLM. The output from the LLM will be passed to the OutputParser (if provided) to parse the output into a final format.
 
-<codes>
+```python
+from langchain import PromptTemplate, OpenAI, LLMChain
 
-### **2. Index-related chains**
+prompt_template = "What is a good name for a company that makes {product}?"
 
-This type of chains are used for interacting with indexes so that you can combine your own data (stored in the indexes) with LLMs. A common use case is question answering over your own documents.
+llm = OpenAI(temperature=0)
+llm_chain = LLMChain(
+llm=llm,
+prompt=PromptTemplate.from_template(prompt_template)
+)
+llm_chain("colorful socks")
+```
+**Document chains ( Index-related chains)**
 
-There are 4 methods to pass multiple documents to the LLM:
+This type of chain is used for interacting with indexes so that you can combine your own data (stored in the indexes) with LLMs. These are the core chains for working with Documents. They are useful for summarizing documents, answering questions over documents, extracting information from documents, and more.
+There are 4 methods or chains to pass multiple documents to the LLM. These core chains are specifically tailored for dealing with unstructured text data. They are designed to take both documents and a question as input, then utilize the language model to formulate a response based on the provided documents.
 
-### **a. Stuffing​** ###
+**(1) Stuff**
 
-Stuffing is the simplest method. All the related data are stuffed into the prompt as context to pass to the language model. 
-
-![image](https://github.com/cweiqiang/-aiap13_group1_sharing/assets/45007601/6d432443-c77e-49a8-be8b-db792c6ab096)
-
-https://github.com/cweiqiang/-aiap13_group1_sharing/blob/6a2a01b9c2a61353c2c25a28b69cdaab45bba085/langchain_dlai_l4_q_a_over_documents.py#L109-L115
-
-### **b. Map Reduce​** ###
-
-In this method, an initial prompt is run on each chunk of data. For example, for summarization tasks, this could be a summary of that chunk. For question-answering tasks, it could be an answer based solely on that chunk. A different prompt is then run to combine all the initial outputs from each chunk of data.
-
-![image](https://github.com/cweiqiang/-aiap13_group1_sharing/assets/45007601/36ae1174-0750-44ff-b592-516733bfd627)
-
-
-### **c. Refine​​** ###
-
-In this method, an initial prompt is run on the first chunk of data and some output is generated. These outputs are then passed into the remaining documents, along with the next document, asking the LLM to refine the output based on the new document.
-
-![image](https://github.com/cweiqiang/-aiap13_group1_sharing/assets/45007601/056b38d9-fd08-4dda-902d-ff8708c0b262)
-
-#### **d. Map-Rerank** ####
-
-In this method, an initial prompt is run on each chunk of data. Besides completing the task, the  chain also gives a score for how certain it is in its answer. The responses are then ranked according to this score, and the highest score is returned. This method is used to rank and prioritize the documents based on their relevance to the query.
-
-![image](https://github.com/cweiqiang/-aiap13_group1_sharing/assets/45007601/85686388-8328-4356-ab15-aa6cb4591497)
+This is the simplest method. All the input documents are injected into the prompt as context to pass to the language model. This chain is suitable for applications where the documents are small and only a few are passed to the language model.
 
 
+![Alt text](images/stuff.png "Title")
 
 
-### **3. All other chains**
+**(2) Map Reduce**
 
-### **Combine chains with the SequentialChain**
+This chain first applies an LLM chain to each document individually (the Map step) and the output from the LLM is treated as a new document. For example, for summarization tasks, this could be a summary of each document. For question-answering tasks, it could be an answer based solely on each document. All the new documents are then passed to a separate combine documents chain to get a single output (the Reduce step) which is then passed to the LLM model to get the final answer. 
 
-### **Create a custom chain with the Chain class**
+![Alt text](images/map_reduce.png "Title")
+
+**(3) Refine**
+In this method, an initial prompt is run on the first document and some output is generated. These outputs are then passed into the remaining documents, along with the next document, asking the LLM to refine the output based on the new document. For each document, it passes all non-document inputs, the current document, and the latest intermediate answer to an LLM chain to get a new answer.
+
+![Alt text](images/refine.png "Title")
+
+
+
+
+**(4) Map-Rerank**
+
+In this chain, an initial prompt is run on each document.  The chain not only tries to complete a task but also gives a score for how certain it is in its answer. The responses are then ranked according to this score, and the highest score is returned. This method is used to rank and prioritize the documents based on their relevance to the query.
+
+![Alt text](images/map_rerank.png "Title")
+
+|Method | Pros| Cons|
+|--------|-----|--------|
+|Stuff | Only makes a single call to the LLM. When generating text, the LLM has access to all the data at once|Most LLMs have a context length limit. Not workable for large documents or many documents as it will result in a prompt larger than the context length |
+|Map Reduce |Can scale to larger documents and more documents than Stuff method.The calls to the LLM on individual documents are independent and therefore can be parallelized. Good for summarization tasks |Requires many more calls to the LLM than Stuffing method. Hence more expensive. Loses some information during the final combined call as individual documents are treated independently. |
+|Refine |Can pull in more relevant context since individual documents are not treated independently. Hence, less loss of information when compared to Map Reduce method|Requires many more calls to the LLM than Stuffing method. Hence, more expensive. Calls are not independent which means that they cannot be processed in parallel like in Map Reduce method. There is also some potential dependencies on the ordering of the documents. |
+|Map Rerank |Similar pros as Map Reduce method. Requires fewer calls, compared to Map Reduce method  |Cannot combine information between documents. This means it is most useful only when you expect that a single simple answer exists in a single document. |
+
+
+
+
+
+**Document QA**
+
+This chain is for question answering over a list of documents.
+
+```python
+from langchain.chains.question_answering import load_qa_chain
+from langchain.llms import OpenAIAI
+```
+
+**Using the Stuff method:**
+
+```python
+chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+query = "What did the president say about Justice Breyer"
+chain.run(input_documents=docs, question=query)nAI
+```
+
+**Using the Map Reduce method:**
+
+
+```python
+llm = OpenAI(batch_size=5, temperature=0)
+chain = load_qa_chain(llm,chain_type="map_reduce")
+query = "What did the president say about Justice Breyer"
+chain.run(input_documents=docs, question=query)
+```
+**Batch_size** - the batch size used during the map step. If this is too high, it could cause rate limiting errors. Note that this only applies for LLMs with this parameter. 
+
+**Using the Refine method:**
+
+```python
+chain = load_qa_chain(OpenAI(temperature=0), chain_type="refine", return_refine_steps=True)
+query = "What did the president say about Justice Breyer"
+chain.run(input_documents=docs, question=query)
+```
+Return_refine_steps - to return the intermediate steps result if you want to inspect them
+
+
+**Using the Map Rerank method:**
+
+```python
+chain = load_qa_chain(OpenAI(temperature=0), chain_type="map_rerank", 
+                      return_intermediate_steps=True)
+query = "What did the president say about Justice Breyer"
+chain.run(input_documents=docs, question=query)
+```
+
+**Combining chains**
+
+
+**SimpleSequentialChain**
+
+A simple chain that allows you to join multiple single-input/single-output chains into one chain.
+
+```python
+# This is the overall chain where we run these two chains in sequence.
+from langchain.chains import SimpleSequentialChain
+
+overall_chain = SimpleSequentialChain(chains=[synopsis_chain, review_chain], verbose=True)
+```
+
+**SequentialChain**
+
+A more general form of sequential chains that allows for multiple inputs/outputs. All outputs from all previous chains will be available to the next chain.
+
+```python
+# This is the overall chain where we run these two chains in sequence.
+from langchain.chains import SequentialChain
+
+overall_chain = SequentialChain(
+    chains=[synopsis_chain, review_chain],
+    input_variables=["era", "title"],
+    # Here we return multiple variables
+    output_variables=["synopsis", "review"],
+    verbose=True)
+
+```
+
+
+**Retrieval QA**
+
+This chain is for question answering over an index.
+
+**Stuff method:**
+
+```python
+
+from langchain.chains import RetrievalQA
+from langchain.document_loaders import TextLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.llms import OpenAI
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import Chroma
+
+loader = TextLoader("../../state_of_the_union.txt")
+documents = loader.load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+texts = text_splitter.split_documents(documents)
+
+embeddings = OpenAIEmbeddings()
+docsearch = Chroma.from_documents(texts, embeddings)
+
+qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=docsearch.as_retriever())
+
+query = "What did the president say about Ketanji Brown Jackson"
+qa.run(query)
+
+```
+
+**Map-Reduce method**
+
+```python
+
+qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="map_reduce", retriever=docsearch.as_retriever())
+
+```
+
+If you want to control the parameters in the chain, you can load the chain directly using Document QA and then pass that directly to the the RetrievalQA chain with the combine_documents_chain parameter
+
+```python
+from langchain.chains.question_answering import load_qa_chain
+
+qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+qa = RetrievalQA(combine_documents_chain=qa_chain, retriever=docsearch.as_retriever())
+
+```
+
+
+
+
+
 
 ## 3.6. Agents
 
