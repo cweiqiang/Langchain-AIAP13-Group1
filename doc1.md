@@ -466,9 +466,7 @@ There are 4 methods or chains to pass multiple documents to the LLM. These core 
 
 This is the simplest method. All the input documents are injected into the prompt as context to pass to the language model. This chain is suitable for applications where the documents are small and only a few are passed to the language model.
 
-
 ![Alt text](images/stuff.png "Title")
-
 
 **(2) Map Reduce**
 
@@ -477,12 +475,10 @@ This chain first applies an LLM chain to each document individually (the Map ste
 ![Alt text](images/map_reduce.png "Title")
 
 **(3) Refine**
+
 In this method, an initial prompt is run on the first document and some output is generated. These outputs are then passed into the remaining documents, along with the next document, asking the LLM to refine the output based on the new document. For each document, it passes all non-document inputs, the current document, and the latest intermediate answer to an LLM chain to get a new answer.
 
 ![Alt text](images/refine.png "Title")
-
-
-
 
 **(4) Map-Rerank**
 
