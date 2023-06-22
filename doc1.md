@@ -76,12 +76,12 @@ Memory refers to the persisting state between calls of a chain/agent. LangChain 
 
 Indexes are utilized to optimize the interaction between Language Models (LLMs) and structured documents. The primary use of indexes in most cases is for retrieval, which involves taking a user's query and returning the most relevant documents. When discussing indexes and retrieval, it mainly applies to unstructured data like text documents. For structured data such as SQL tables or APIs, specific use case sections provide relevant functionality links.
 
-Here are the various index types for more information to be read with the hyperlinks:
+Here are the various building blocks to load, transform, store and query the data. For more information please refer to the hyperlinks:
 
-- Document Loaders: How to load documents from a variety of sources.
-- Text Splitters: An overview and different types of the Text Splitters.
-- VectorStores: An overview and different types of the Vector Stores.
-- Retrievers: An overview and different types of the Retrievers.
+- [Document Loaders](https://python.langchain.com/docs/modules/data_connection/document_loaders/): How to load documents from a variety of sources.
+- [Text Splitters](https://python.langchain.com/docs/modules/data_connection/document_transformers/): An overview and different types of the Text Splitters.
+- [VectorStores](https://python.langchain.com/docs/modules/data_connection/vectorstores/): An overview and different types of the Vector Stores.
+- [Retrievers](https://python.langchain.com/docs/modules/data_connection/retrievers/): An overview and different types of the Retrievers.
 
 ### **Chains:**
 
@@ -389,30 +389,62 @@ One common use case example is question answering over document data. For questi
 
 The 4 main elements when working with indexes are:
 
-1. Document Loaders - for loading documents from various sources
-2. Text Splitters - for splitting large text documents into smaller chunks
-3. VectorStores - for creating and storing embeddings for each document
-4. Retrievers - interface for fetching relevant documents to combine with LLMs
+1. [Document Loaders](https://python.langchain.com/docs/modules/data_connection/document_loaders/) - for loading documents from various sources
+2. [Text Splitters](https://python.langchain.com/docs/modules/data_connection/document_transformers/) - for splitting large text documents into smaller chunks
+3. [VectorStores](https://python.langchain.com/docs/modules/data_connection/vectorstores/) - for creating and storing embeddings for each document
+4. [Retrievers](https://python.langchain.com/docs/modules/data_connection/retrievers/) - interface for fetching relevant documents to combine with LLMs
 
-A problem faced when querying a LLM on a large document set is that LLM’s can only inspect a few thousand words at a time.This is where embeddings and VectorStores come in.
+A problem faced when querying a LLM on a large document set is that LLM’s can only inspect a few thousand words at a time. This is where embeddings and VectorStores come in.
 
-![Alt text](images/image5.png "Title")
+![llm limitation](images/image5.png "Title")
 
-**Embeddings** are vector representations of words or phrases that capture their meaning and context. Knowing which pieces of text are similar will be useful in figuring out which pieces of text to include when passing to the LLM to answer the question.
+**Embeddings** are vector representations of words or phrases that capture their meaning and context and text with similar content will have similar vectors. Knowing which pieces of text are similar will be useful in figuring out which pieces of text to include when passing to the LLM to answer the question.
 
-![Alt text](images/image4.png "Title")
+![embeddings](images/image4.png "Title")
 
 As the LLM may not be able to take in a whole document, the document is broken into smaller **chunks** so that only the most relevant ones are passed to the LLM. An **embedding** for each of the chunks is created and then stored in a **Vector Database**. This is how the **Index** is created.
 
-![Alt text](images/image2.png "Title")
+![split, embed and store](images/image2.png "Title")
 
 The **Index** can now be used during runtime to find the pieces of text most relevant to an incoming query. An embedding for the query is first created and then compared to all the vectors in the database. The `n` most similar vectors are then picked and returned.
 
-![Alt text](images/image3.png "Title")
+![find most relevant vectors](images/image3.png "Title")
 
-The values are then passed, using the prompt, to the LLM for processing to get back the final answer.
+The returned values can now fit in the LLM context. They are then passed, using the prompt, to the LLM for processing to get back the final answer.
 
-![Alt text](images/image1.png "Title")
+![returned vectors processed by llm](images/image1.png "Title")
+
+```python
+from langchain.document_loaders import CSVLoader
+from langchain.vectorstores import DocArrayInMemorySearch
+from IPython.display import display, Markdown
+
+# initialize csv loader
+loader = CSVLoader(file_path='OutdoorClothingCatalog_1000.csv')
+
+# create an index and vectorstore
+index = VectorstoreIndexCreator(
+    vectorstore_cls=DocArrayInMemorySearch
+).from_loaders([loader])
+
+# ask question about the csv
+query ="Please list all your shirts with sun protection \
+in a table in markdown and summarize each one."
+
+# create a response using the index created earlier
+response = index.query(query)
+
+display(Markdown(response))
+```
+
+|Name|Description|
+|-|-|
+Men's Tropical Plaid Short-Sleeve Shirt|UPF 50+ rated, 100% polyester, wrinkle-resistant, front and back cape venting, two front bellows pockets
+Men's Plaid Tropic Shirt, Short-Sleeve|	UPF 50+ rated, 52% polyester and 48% nylon, machine washable and dryable, front and back cape venting, two front bellows pockets
+Men's TropicVibe Shirt, Short-Sleeve|	UPF 50+ rated, 71% Nylon, 29% Polyester, 100% Polyester knit mesh, wrinkle resistant, front and back cape venting, two front bellows pockets
+Sun Shield Shirt by|	UPF 50+ rated, 78% nylon, 22% Lycra Xtra Life fiber, wicks moisture, fits comfortably over swimsuit, abrasion resistant
+
+All four shirts provide UPF 50+ sun protection, blocking 98% of the sun's harmful rays. The Men's Tropical Plaid Short-Sleeve Shirt is made of 100% polyester and is wrinkle-resistant.
 
 ## 4.5. Chains
 
