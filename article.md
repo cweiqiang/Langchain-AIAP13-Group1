@@ -54,7 +54,7 @@ Common examples of these applications include question answering over specific d
 5. create_spark_dataframe_Agent
 6. Custom made agents, etc
 
-## Tools:
+## Tools
 
 1. Wolfram Alpha for computation
 2. PythonReplTool for code interpretation and execution
@@ -463,8 +463,8 @@ These chains are structured assembly of components for accomplishing specific hi
 
 Please refer to these links for the list of available chains:
 
-- https://python.langchain.com/docs/modules/chains/popular/
-- https://python.langchain.com/docs/modules/chains/additional/
+- <https://python.langchain.com/docs/modules/chains/popular/>
+- <https://python.langchain.com/docs/modules/chains/additional/>
 
 We will look at some of these chains.
 
@@ -665,7 +665,7 @@ LangChain provides agents that have access to a suite of tools. Depending on the
 5. create_spark_dataframe_Agent
 6. Custom made agents, etc
 
-### Tools:
+### Tools
 
 1. Wolfram Alpha for computation
 2. PythonReplTool for code interpretation and execution
@@ -681,8 +681,19 @@ LangChain provides agents that have access to a suite of tools. Depending on the
 
 ## 5.2. Data Analysis & Visualisation - Data in CSV format
 
-1. notebooks/LangChain_PandasDataFrame_Agent_part1.ipynb
-2. notebooks/LangChain_PandasDataFrame_Agent_part2.ipynb
+`1. notebooks/LangChain_PandasDataFrame_Agent_part1.ipynb`
+
+The notebook sourced from Analytics Vidhya focuses on using the Langchain framework to automate basic data analysis tasks. The article illustrates on how to create a Langchain agent using the built-in pandas dataframe agent. The article demonstrates the use of the built-in pandas Langchain agent to conduct basic exploratory data analysis (EDA), including univariate analysis, hypothesis testing, and bivariate analysis.
+
+`2. notebooks/LangChain_PandasDataFrame_Agent_part2.ipynb`
+
+In this notebook, we illustrate the use of Langchain for geospatial analysis for datasets in the Singaporean context. We will be using the following dataset from Angel Hsu's Googlesheet of 100 Chicken Rice datapoints, which include the geospatial coordinates of chicken rice stalls in Singapore, along with their food ratings, costs, and E-coli levels.
+
+The above Googlesheet is available (as of 21 Jun 2023) at [this url](https://docs.google.com/spreadsheets/d/1hPis5_b_pwBpReao6QDx3wZK9_ExdohFLfOHI9ZWClM/edit#gid=2059674870), also posted on her [Youtube video](https://www.youtube.com/watch?v=toFZJ9ICWWY) titled 'I ate at 100 chicken rice stalls, and sent them to the lab... | Top 4 Chicken Rice in Singapore'.
+
+A Streamlit app is also created to visualise the geospatial data, color-coded according to tiers of E.coli count levels, can also be run locally through the following commands:
+
+`streamlit run ./src/app.py`
 
 # 6.0 Limitations
 
@@ -696,4 +707,46 @@ LangChain represents a significant breakthrough in how we build LLM-powered appl
 
 Therefore, as more tools and frameworks emerge to help developers in the lifecycle of LLM-powered applications, it gives rise to the need to constantly educate ourselves with how they can be used and what are the best practices in implementing them.
 
-# 8.0 Resources and References
+# 8.0 Langchain Resources
+
+**OpenAI based Langchain Resources:**
+
+1. [Langchain Official Github Repository](https://github.com/hwchase17/langchain)
+
+2. [DeepLearning.AI course on "LangChain for LLM Application Development.](https://learn.deeplearning.ai/login?redirect_course=langchain) (Notebooks available in `./notebooks/deeplearningai`).
+
+3. ["How to Automate Data Analysis with Langchain" by Analytics Vidhya.](https://www.analyticsvidhya.com/blog/2023/06/how-to-automate-data-analysis-with-langchain/)
+
+4. [LangChain Document Reader Github Repository by pgrennin](https://github.com/pgrennin/ai_question_answer_web_template/tree/main)
+
+5. ["Answering Question About Custom Documents Using LangChain (and OpenAI)" by kleiber.me.](https://kleiber.me/blog/2023/02/25/question-answering-using-langchain/)
+
+6. ["Complete Guide: Connect OpenAI and Google Search using LangChain" on Medium by codingthesmartway.com.](https://medium.com/codingthesmartway-com-blog/complete-guide-connect-openai-and-google-search-using-langchain-43bbfb0dd264)
+
+7. ["Chatbot Factory: Streamline Python Chatbot Creation with LLMs and Langchain" by Finxter.](https://blog.finxter.com/chatbot-factory-streamline-python-chatbot-creation-with-llms-and-langchain/)
+
+8. ["Build a Q&A Bot over private data with OpenAI and LangChain" by Leo Wang on LinkedIn.](https://www.linkedin.com/pulse/build-qa-bot-over-private-data-openai-langchain-leo-wang)
+
+9. ["Semantic Search with Elasticsearch, OpenAI, and LangChain" by Dylan Castillo.](https://dylancastillo.co/semantic-search-elasticsearch-openai-langchain/)
+
+10. ["How I Turned My Company’s Docs into a Searchable Database with OpenAI" by towardsdatascience.com.](https://towardsdatascience.com/how-i-turned-my-companys-docs-into-a-searchable-database-with-openai-4f2d34bd8736)
+
+11. [LangChain tutorial #1: Build an LLM-powered app in 18 lines of code. A step-by-step guide using OpenAI, LangChain, and Streamlit, By Chanin Nantasenamat](https://blog.streamlit.io/langchain-tutorial-1-build-an-llm-powered-app-in-18-lines-of-code/)
+
+12. [LangChain tutorial #2: Build a blog outline generator app in 25 lines of code. A guide on conquering writer’s block with a Streamlit app, By Chanin Nantasenamat](https://blog.streamlit.io/langchain-tutorial-2-build-a-blog-outline-generator-app-in-25-lines-of-code/)
+
+13. [LangChain tutorial #3: Build a Text Summarization app. Explore the use of the document loader, text splitter, and summarization chain, By Chanin Nantasenamat](<https://blog.streamlit.io/langchain-tutorial-3-build-a-text-summarization-app/>)
+
+14. [LangChain tutorial #4: Build an Ask the Doc app. How to get answers from documents using embeddings, a vector store, and a question-answering chain, By Chanin Nantasenamat](https://blog.streamlit.io/langchain-tutorial-4-build-an-ask-the-doc-app/)
+
+15. ["Function calling and other API updates (New from OPENAI!)" on OpenAI Blog.](https://openai.com/blog/function-calling-and-other-api-updates)
+
+**HuggingFace and Open-source LLMs based Langchain resources:**
+
+16. ["Answering Question About your Documents Using LangChain (and NOT OpenAI)" by artificialcorner.com.](https://artificialcorner.com/answering-question-about-your-documents-using-langchain-and-not-openai-2f75b8d639ae)
+
+    - GitHub Repository by fabiomatricardi: [Demo notebook](https://github.com/fabiomatricardi/cdQnA/blob/acae54d6e6746f7a783320109b451f510fcc8f91/TalkToYourDocumentsWithHuggingFaceLLM.ipynb)
+
+17. ["YT Langchain - Running Huggingface Models locally notebook" by Sam Witteveen](https://colab.research.google.com/drive/1h2505J5H4Y9vngzPD08ppf1ga8sWxLvZ?usp=sharing#scrollTo=2PpqSc3cG7jJ)
+
+18. ["LLM tutorial Series on llamaindex, langchain, Chroma (Chromadb), Pinecone" by onlyphantom](https://github.com/onlyphantom/llm-python)
