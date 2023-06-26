@@ -574,36 +574,6 @@ query = "What did the president say about Justice Breyer"
 chain.run(input_documents=docs, question=query)
 ```
 
-**Combining chains**
-
-**SimpleSequentialChain**
-
-A simple chain that allows you to join multiple single-input/single-output chains into one chain.
-
-```python
-# This is the overall chain where we run these two chains in sequence.
-from langchain.chains import SimpleSequentialChain
-
-overall_chain = SimpleSequentialChain(chains=[synopsis_chain, review_chain], verbose=True)
-```
-
-**SequentialChain**
-
-A more general form of sequential chains that allows for multiple inputs/outputs. All outputs from all previous chains will be available to the next chain.
-
-```python
-# This is the overall chain where we run these two chains in sequence.
-from langchain.chains import SequentialChain
-
-overall_chain = SequentialChain(
-    chains=[synopsis_chain, review_chain],
-    input_variables=["era", "title"],
-    # Here we return multiple variables
-    output_variables=["synopsis", "review"],
-    verbose=True)
-
-```
-
 **Retrieval QA**
 
 This chain is for question answering over an index.
@@ -649,6 +619,36 @@ from langchain.chains.question_answering import load_qa_chain
 
 qa_chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
 qa = RetrievalQA(combine_documents_chain=qa_chain, retriever=docsearch.as_retriever())
+
+```
+
+**Combining chains**
+
+**SimpleSequentialChain**
+
+A simple chain that allows you to join multiple single-input/single-output chains into one chain.
+
+```python
+# This is the overall chain where we run these two chains in sequence.
+from langchain.chains import SimpleSequentialChain
+
+overall_chain = SimpleSequentialChain(chains=[synopsis_chain, review_chain], verbose=True)
+```
+
+**SequentialChain**
+
+A more general form of sequential chains that allows for multiple inputs/outputs. All outputs from all previous chains will be available to the next chain.
+
+```python
+# This is the overall chain where we run these two chains in sequence.
+from langchain.chains import SequentialChain
+
+overall_chain = SequentialChain(
+    chains=[synopsis_chain, review_chain],
+    input_variables=["era", "title"],
+    # Here we return multiple variables
+    output_variables=["synopsis", "review"],
+    verbose=True)
 
 ```
 
