@@ -487,6 +487,7 @@ llm_chain("colorful socks")
 **Document chains ( Index-related chains)**
 
 This type of chain is used for interacting with indexes so that you can combine your own data (stored in the indexes) with LLMs. These are the core chains for working with Documents. They are useful for summarizing documents, answering questions over documents, extracting information from documents, and more.
+
 There are 4 methods or chains to pass multiple documents to the LLM. These core chains are specifically tailored for dealing with unstructured text data. They are designed to take both documents and a question as input, then utilize the language model to formulate a response based on the provided documents.
 
 **(1) Stuff**
