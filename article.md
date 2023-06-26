@@ -76,13 +76,6 @@ Memory refers to the persisting state between calls of a chain/agent. LangChain 
 
 Indexes are utilized to optimize the interaction between Language Models (LLMs) and structured documents. The primary use of indexes in most cases is for retrieval, which involves taking a user's query and returning the most relevant documents. When discussing indexes and retrieval, it mainly applies to unstructured data like text documents. For structured data such as SQL tables or APIs, specific use case sections provide relevant functionality links.
 
-Here are the various building blocks to load, transform, store and query the data. For more information please refer to the hyperlinks:
-
-- [Document Loaders](https://python.langchain.com/docs/modules/data_connection/document_loaders/): How to load documents from a variety of sources.
-- [Text Splitters](https://python.langchain.com/docs/modules/data_connection/document_transformers/): An overview and different types of the Text Splitters.
-- [VectorStores](https://python.langchain.com/docs/modules/data_connection/vectorstores/): An overview and different types of the Vector Stores.
-- [Retrievers](https://python.langchain.com/docs/modules/data_connection/retrievers/): An overview and different types of the Retrievers.
-
 ### **Chains:**
 
 Chains involve sequences of calls (whether to an LLM or a different utility). LangChain provides a standard interface for chains, integrations with other tools, and end-to-end chains for common applications.
