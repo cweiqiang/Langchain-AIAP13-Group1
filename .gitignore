@@ -1,2 +1,4 @@
 /aiap-group-share
 .env
+.gitignore
+.DS_Store
