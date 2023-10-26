@@ -1,4 +1,4 @@
-# AIAP Batch 13 Group Sharing - Group 1
+# AIAP Batch 13 Group 1 Sharing on Langchain
 
 ## 1.0 Folder Structure
 
